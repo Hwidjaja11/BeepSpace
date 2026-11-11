@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { 
+      background: #111; 
+      color: #fff; 
+      display: flex; 
+      flex-direction: column;
+      height: 100vh; 
+      margin: 0;
+      align-items: center; 
+      justify-content: center; 
+      font-family: sans-serif; 
+      gap: 20px;
+    }
+    iframe {
+      border-radius: 8px;
+      border: 1px solid #333;
+    }
+    a {
+      color: #888;
+      text-decoration: none;
+      font-size: 14px;
+    }
+    a:hover {
+      color: #fff;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <iframe 
+    width="560" 
+    height="315" 
+    src="https://youtube.com" 
+    title="Rhythm Superstore - Lala's Part-Time Job" 
+    frameborder="0" 
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+    allowfullscreen>
+  </iframe>
+
+  <a href="https://www.youtube.com/watch?v=cBzk73pLizQ" target="_blank">
+    Watch Rhythm Superstore on YouTube ↗
+  </a>
+
+  <p>Press <strong>Space</strong> or <strong>J</strong> (Normal) | Press <strong>D</strong> (Higher Pitch)</p>
+
+  <script>
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    function beep(frequency) {
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      
+      osc.frequency.value = frequency; 
+      osc.start();
+      setTimeout(() => osc.stop(), 80); // Short, crisp 80ms beep for rhythm
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.repeat) return; // Prevents continuous buzzing if held down
+
+      if (e.code === 'Space' || e.code === 'KeyJ') {
+        e.preventDefault();
+        beep(800);
+      } else if (e.code === 'KeyD') {
+        e.preventDefault();
+        beep(1050);
+      }
+    });
+  </script>
+
+</body>
+</html>
